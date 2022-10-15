@@ -1,14 +1,4 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * Generated with the TypeScript template
- * https://github.com/react-native-community/react-native-template-typescript
- *
- * @format
- */
-
-import React, {useReducer} from 'react';
+import React, {useReducer, useRef} from 'react';
 import {
   LayoutChangeEvent,
   Pressable,
@@ -18,7 +8,11 @@ import {
   View,
 } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {
+  BottomTabBarProps,
+  BottomTabNavigationOptions,
+  createBottomTabNavigator,
+} from '@react-navigation/bottom-tabs';
 import Svg, {Path} from 'react-native-svg';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Animated, {
@@ -29,15 +23,34 @@ import Animated, {
 
 const Tab = createBottomTabNavigator();
 const AnimatedSvg = Animated.createAnimatedComponent(Svg);
+const initialRouteName = 'New';
 
 const App = () => {
   return (
     <>
       <StatusBar barStyle="light-content" />
       <NavigationContainer>
-        <Tab.Navigator tabBar={props => <AnimatedTabBar {...props} />}>
-          <Tab.Screen name="New" component={PlaceholderScreen} />
+        <Tab.Navigator
+          tabBar={props => <AnimatedTabBar {...props} />}
+          initialRouteName={initialRouteName}>
           <Tab.Screen name="Profile" component={PlaceholderScreen} />
+          <Tab.Screen
+            name={initialRouteName}
+            component={PlaceholderScreen}
+            options={{
+              tabBarIcon: () => (
+                <View style={styles.iconContainer}>
+                  <Svg width={24} height={24} viewBox="0 0 24 24">
+                    <Path fill="#000" d="M16 12h2v4h-2z" />
+                    <Path
+                      fill="#000"
+                      d="M20 7V5c0-1.103-.897-2-2-2H5C3.346 3 2 4.346 2 6v12c0 2.201 1.794 3 3 3h15c1.103 0 2-.897 2-2V9c0-1.103-.897-2-2-2zM5 5h13v2H5a1.001 1.001 0 0 1 0-2zm15 14H5.012C4.55 18.988 4 18.805 4 18V8.815c.314.113.647.185 1 .185h15v10z"
+                    />
+                  </Svg>
+                </View>
+              ),
+            }}
+          />
           <Tab.Screen name="Settings" component={PlaceholderScreen} />
         </Tab.Navigator>
       </NavigationContainer>
@@ -46,6 +59,7 @@ const App = () => {
 };
 
 const PlaceholderScreen = () => {
+  // eslint-disable-next-line react-native/no-inline-styles
   return <View style={{flex: 1, backgroundColor: '#604AE6'}} />;
 };
 
@@ -95,6 +109,7 @@ const AnimatedTabBar = ({
 
   return (
     <View style={[styles.tabBar, {paddingBottom: bottom}]}>
+      {/* curve bg */}
       <AnimatedSvg
         width={110}
         height={60}
@@ -108,12 +123,16 @@ const AnimatedTabBar = ({
 
       <View style={styles.tabBarContainer}>
         {routes.map((route, index) => {
+          const active = index === activeIndex;
+          const {options} = descriptors[route.key];
+
           return (
             <TabBarComponent
+              active={active}
               onLayout={event => handleLayout(event, index)}
               key={route.key}
+              options={options}
               onPress={() => {
-                console.log('hey');
                 navigation.navigate(route.name);
               }}
             />
@@ -125,18 +144,48 @@ const AnimatedTabBar = ({
 };
 
 type TabBarComponentProps = {
+  active?: boolean;
   onPress: () => void;
+  options: BottomTabNavigationOptions;
   onLayout: (event: LayoutChangeEvent) => void;
 };
 
-const TabBarComponent = ({onPress, onLayout}: TabBarComponentProps) => {
+// on pressable bug
+const TabBarComponent = ({
+  active,
+  onPress,
+  onLayout,
+  options,
+}: TabBarComponentProps) => {
+  const ref = useRef(null);
+
+  // animations ------------------------------------------------------
+
+  const animatedComponentCircleStyles = useAnimatedStyle(() => {
+    return {
+      transform: [
+        {
+          scale: withTiming(active ? 1 : 0, {duration: 250}),
+        },
+      ],
+    };
+  });
+
+  const animatedIconContainerStyles = useAnimatedStyle(() => {
+    return {
+      opacity: withTiming(active ? 1 : 0.5, {duration: 250}),
+    };
+  });
+
   return (
     <Pressable onPress={onPress} onLayout={onLayout} style={styles.component}>
-      <View style={styles.componentCircle}>
-        <View style={styles.iconContainer}>
-          <Text>?</Text>
-        </View>
-      </View>
+      <Animated.View
+        style={[styles.componentCircle, animatedComponentCircleStyles]}
+      />
+      <Animated.View
+        style={[styles.iconContainer, animatedIconContainerStyles]}>
+        {options.tabBarIcon ? options.tabBarIcon({ref}) : <Text>?</Text>}
+      </Animated.View>
     </Pressable>
   );
 };
