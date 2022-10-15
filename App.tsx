@@ -33,7 +33,22 @@ const App = () => {
         <Tab.Navigator
           tabBar={props => <AnimatedTabBar {...props} />}
           initialRouteName={initialRouteName}>
-          <Tab.Screen name="Profile" component={PlaceholderScreen} />
+          <Tab.Screen
+            name="History"
+            component={PlaceholderScreen}
+            options={{
+              tabBarIcon: () => (
+                <View style={styles.iconContainer}>
+                  <Svg width={24} height={24} viewBox="0 0 24 24">
+                    <Path
+                      fill="#000"
+                      d="M19.5 12A7.5 7.5 0 0 0 6.9 6.5h1.35a.75.75 0 0 1 0 1.5h-3a.75.75 0 0 1-.75-.75v-3a.75.75 0 0 1 1.5 0v1.042a9 9 0 1 1-2.895 5.331a.749.749 0 0 1 .752-.623c.46 0 .791.438.724.892A7.5 7.5 0 1 0 19.5 12Zm-7-4.25a.75.75 0 0 0-1.5 0v4.5c0 .414.336.75.75.75h2.5a.75.75 0 0 0 0-1.5H12.5V7.75Z"
+                    />
+                  </Svg>
+                </View>
+              ),
+            }}
+          />
           <Tab.Screen
             name={initialRouteName}
             component={PlaceholderScreen}
@@ -51,7 +66,22 @@ const App = () => {
               ),
             }}
           />
-          <Tab.Screen name="Settings" component={PlaceholderScreen} />
+          <Tab.Screen
+            name="Settings"
+            component={PlaceholderScreen}
+            options={{
+              tabBarIcon: () => (
+                <View style={styles.iconContainer}>
+                  <Svg width={24} height={24} viewBox="0 0 24 24">
+                    <Path
+                      fill="#000"
+                      d="m19.85 8.75l4.15.83v4.84l-4.15.83l2.35 3.52l-3.43 3.43l-3.52-2.35l-.83 4.15H9.58l-.83-4.15l-3.52 2.35l-3.43-3.43l2.35-3.52L0 14.42V9.58l4.15-.83L1.8 5.23L5.23 1.8l3.52 2.35L9.58 0h4.84l.83 4.15l3.52-2.35l3.43 3.43l-2.35 3.52zm-1.57 5.07l4-.81v-2l-4-.81l-.54-1.3l2.29-3.43l-1.43-1.43l-3.43 2.29l-1.3-.54l-.81-4h-2l-.81 4l-1.3.54l-3.43-2.29l-1.43 1.43L6.38 8.9l-.54 1.3l-4 .81v2l4 .81l.54 1.3l-2.29 3.43l1.43 1.43l3.43-2.29l1.3.54l.81 4h2l.81-4l1.3-.54l3.43 2.29l1.43-1.43l-2.29-3.43l.54-1.3zm-8.186-4.672A3.43 3.43 0 0 1 12 8.57A3.44 3.44 0 0 1 15.43 12a3.43 3.43 0 1 1-5.336-2.852zm.956 4.274c.281.188.612.288.95.288A1.7 1.7 0 0 0 13.71 12a1.71 1.71 0 1 0-2.66 1.422z"
+                    />
+                  </Svg>
+                </View>
+              ),
+            }}
+          />
         </Tab.Navigator>
       </NavigationContainer>
     </>
