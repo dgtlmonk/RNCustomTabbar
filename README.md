@@ -1,6 +1,6 @@
-## React Native Exercises
+ ## 🔥 React Native Exercises
 
-### Custom Tab Bar
+### 🚀 Custom Tab Bar
 
 ![custom-tabbar](https://user-images.githubusercontent.com/43092/195966380-0ab534bf-a288-4ca8-b45b-9e0eee546b61.gif)
 
@@ -14,11 +14,11 @@ Excluded lottie icons
 
 ---
 
-Known issues: Gradle - Java version compatibility
+🧐 Known issues: Gradle - Java version compatibility
 
 Solution:
 
-> edit [gradle-wrapper.properties](android/gradle/wrapper/gradle-wrapper.properties)
+> edit `distributionUrl` in [gradle-wrapper.properties](android/gradle/wrapper/gradle-wrapper.properties)
 
-then find compatible distribution from [gradle distribution resouce](https://services.gradle.org/distributions/)
+📝  [Gradle distribution resouce](https://services.gradle.org/distributions/)
 
